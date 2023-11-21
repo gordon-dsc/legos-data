@@ -4,7 +4,7 @@ library(tidyverse)
 library(rvest)
 library(tibble)
 library(readr)
-library(string)
+library(stringr)
 ```
 
 **WEB SCRAPING - 121 Franchises**
