@@ -92,4 +92,5 @@ original_medium_df <- data.frame(original_medium)
 
 #creat a tibble of all 4 columns
 tibble(title,release_year, original_medium_df, movie_revenue) -> movies
+
 ```
