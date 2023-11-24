@@ -241,7 +241,7 @@ sets_rec_a <- sets_rec |>
   unnest_wider(json)
 
 
-# comine themes_rec_a to sets_rec_a by joining the id column in themes_rec_a to the theme_id column in sets_rec_a
+# combine themes_rec_a to sets_rec_a by joining the id column in themes_rec_a to the theme_id column in sets_rec_a
 lego_data <- sets_rec_a |>
   left_join(y = themes_rec_a, by = join_by(theme_id == id)) |>
   rename(sets = name.x) |>
