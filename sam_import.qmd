@@ -1,16 +1,15 @@
-```{r}
+```{r packages}
+#Install Packages
 library(httr2)
 library(tidyverse)
 library(rvest)
-library(tibble)
-library(readr)
-library(string)
+library(dplyr)
 ```
 
 **WEB SCRAPING - 121 movies**
 
-```{r}
-#Web Scrape - franchise - GOOD
+```{r franchise}
+#Web Scrape - franchise
 
 #Get the website to scrape
 title <- read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
@@ -33,8 +32,9 @@ title <- title[-122, ]
 title <-tibble(title)
 ```
 
-```{r}
-#Web Scrape - year of inception - GOOD 
+```{r year of inception}
+
+#Web Scrape - year of inception 
 
 #Get the website to scrape
 year <- read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|> 
@@ -56,8 +56,8 @@ year_1|>
   select(year) -> release_year
 ```
 
-```{r}
-#Web Scrape - Total Revenue - GOOD
+```{r revenue}
+#Web Scrape - Total Revenue
 
 #Get the website to scrape
 read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
@@ -74,11 +74,11 @@ total_revenue_df <- data.frame(total_revenue)
 #Clean the data
 total_revenue_df|>
   mutate(revenue = parse_number(total_revenue))|>
-  select(revenue) -> movie_revenue
+  select(revenue) -> franchise_revenue
 ```
 
-```{r}
-#Web Scraping - Original Medium - GOOD
+```{r medium}
+#Web Scraping - Original Medium
 read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
 
 #Get the data
@@ -87,9 +87,9 @@ html_elements("td:nth-child(5)")|>
 #Print out data neatly
 html_text2() -> original_medium
 
-#convert to a dataframe
+#convert to a data frame
 original_medium_df <- data.frame(original_medium)
 
-#creat a tibble of all 4 columns
-tibble(title,release_year, original_medium_df, movie_revenue) -> movies
+#create a tibble of all 4 columns
+tibble(title,release_year, original_medium_df, franchise_revenue) -> franchise
 ```
