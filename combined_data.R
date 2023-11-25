@@ -2,7 +2,7 @@
 
 
 # combine common themes together
-lego_data <- lego_data_a |>
+lego_data <- lego_data |>
   mutate(themes = if_else(themes == "The Simpsons Series 1" | themes == "The Simpsons Series 2", "The Simpsons", themes)) |>
   mutate(themes = if_else(themes == "Marvel Series 1" | themes == "Marvel Series 2" | themes == "Marvel Super Heroes" | themes == "Super Heroes Marvel", "Marvel", themes)) |>
   mutate(themes = if_else(themes == "The LEGO Batman Movie" | themes == "The LEGO Batman Movie Series 1" | themes == "The LEGO Batman Movie Series 2", "Batman", themes)) |>
