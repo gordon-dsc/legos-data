@@ -3,6 +3,55 @@ title: "Data Analysis Script"
 format: html
 ---
 
-```{r packages}
+#Exploration - Sam
+install.packages("tidyverse")
+library(tidyverse)
 
-```
+#Question 1: Are there more Lego sets in movies than in non-movies?
+
+##Movies
+movie_subset <-filter(lego_franchise, original_medium == "Film" | original_medium == "Animated film" | original_medium == "Animated films")
+movie_vector <- as.vector(movie_subset$media_franchise)
+length(movie_vector) -> movie_sets_count
+length(unique(movie_vector)) -> movie_franchise
+movie_average <- (movie_sets_count / movie_franchise)
+movie_average|>View()
+ 
+##Non-Movies
+
+nmovie_subset <-filter(lego_franchise, original_medium != "Film" & original_medium != "Animated film" & original_medium != "Animated films")
+nmovie_vector <- as.vector(nmovie_subset$media_franchise)
+length(nmovie_vector) -> nmovie_sets_count
+length(unique(nmovie_vector)) -> nmovie_franchise
+nmovie_average <- (nmovie_sets_count / nmovie_franchise)
+nmovie_average|>View()
+
+#This shows that there are on average, more sets if the franchise is a movie
+
+#Question 2: Do franchises that are higher grossing have more sets?
+
+lego_franchise|>
+  group_by(media_franchise)|>
+  mutate(count = n()) |>
+  distinct(media_franchise, revenue, count) |>
+  ggplot(mapping = aes(x = revenue,
+                       y = count)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+#Question 3:Is the above answer different than with
+#movie franchises vs non-movie franchises
+
+lego_franchise|>
+  mutate(movie = if_else(
+    condition = original_medium == "Film" | original_medium == "Animated films",
+    true = "movie",
+    false = "not_movie"))|>
+  group_by(media_franchise)|>
+  mutate(count = n()) |>
+  distinct(media_franchise, revenue, count, movie) |>
+  ggplot(mapping = aes(x = revenue,
+                       y = count,
+                       color = movie)) +
+  geom_point() +
+  geom_smooth(method = "lm")
