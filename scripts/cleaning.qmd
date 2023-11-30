@@ -17,6 +17,13 @@ library(rvest)
 library(dplyr)
 ```
 
+### Import list objects
+
+```{r import}
+load("../data/imported_data/themes.rds")
+load("../data/imported_data/all_sets.rds")
+```
+
 ### Rectangle Themes
 
 ```{r rectangle}

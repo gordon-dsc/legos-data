@@ -290,6 +290,12 @@ all_sets <- list(sets1[["results"]],
                   sets22[["results"]])
 ```
 
+```{r writing-data-to-file}
+save(themes, file = "../data/imported_data/themes.rds")
+save(all_sets, file = "../data/imported_data/all_sets.rds")
+getwd()
+```
+
 ## Web Scrape
 
 ### Media Franchise
