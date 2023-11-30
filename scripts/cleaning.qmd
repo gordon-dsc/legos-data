@@ -65,15 +65,6 @@ lego_data <- sets_rec_a |>
   select(!(set_img_url:last_modified_dt) & !(set_num))
 ```
 
-Since we needed to rectangle the themes and sets data before joining them, these code cells were placed in the cleaning.qmd. However, the lego_data.csv was written to the imported_data folder since it was technically our imported API data.
-
-```{r csv}
-
-# write lego_data csv file to imported_data folder
-write_csv(lego_data,
-          file = "../data/imported_data/lego_data.csv")
-```
-
 ### Combining API and Web Scrape
 
 ```{r combine themes}
