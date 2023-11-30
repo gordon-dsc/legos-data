@@ -1,15 +1,20 @@
-```{r}
+```{r packages}
+#Install Packages
 library(httr2)
 library(tidyverse)
 library(rvest)
+<<<<<<< HEAD
 library(tibble)
 library(readr)
+=======
+library(dplyr)
+>>>>>>> 8ee76781ad3757981bdd1e5181755448206c4ca3
 ```
 
 **WEB SCRAPING - 121 movies**
 
-```{r}
-#Web Scrape - franchise - GOOD
+```{r franchise}
+#Web Scrape - franchise
 
 #Get the website to scrape
 title <- read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
@@ -32,8 +37,9 @@ title <- title[-122, ]
 title <-tibble(title)
 ```
 
-```{r}
-#Web Scrape - year of inception - GOOD 
+```{r year of inception}
+
+#Web Scrape - year of inception 
 
 #Get the website to scrape
 year <- read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|> 
@@ -55,8 +61,8 @@ year_1|>
   select(year) -> release_year
 ```
 
-```{r}
-#Web Scrape - Total Revenue - GOOD
+```{r revenue}
+#Web Scrape - Total Revenue
 
 #Get the website to scrape
 read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
@@ -76,8 +82,8 @@ total_revenue_df|>
   select(revenue) -> franchise_revenue
 ```
 
-```{r}
-#Web Scraping - Original Medium - GOOD
+```{r medium}
+#Web Scraping - Original Medium
 read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
 
 #Get the data
