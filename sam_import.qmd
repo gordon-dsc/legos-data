@@ -4,7 +4,6 @@ library(tidyverse)
 library(rvest)
 library(tibble)
 library(readr)
-library(string)
 ```
 
 **WEB SCRAPING - 121 movies**
@@ -74,7 +73,7 @@ total_revenue_df <- data.frame(total_revenue)
 #Clean the data
 total_revenue_df|>
   mutate(revenue = parse_number(total_revenue))|>
-  select(revenue) -> movie_revenue
+  select(revenue) -> franchise_revenue
 ```
 
 ```{r}
@@ -87,9 +86,10 @@ html_elements("td:nth-child(5)")|>
 #Print out data neatly
 html_text2() -> original_medium
 
-#convert to a dataframe
+#convert to a data frame
 original_medium_df <- data.frame(original_medium)
 
-#creat a tibble of all 4 columns
-tibble(title,release_year, original_medium_df, movie_revenue) -> movies
+#create a tibble of all 4 columns
+tibble(title,release_year, original_medium_df, franchise_revenue) -> franchise
 ```
+

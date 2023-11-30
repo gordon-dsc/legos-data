@@ -30,7 +30,7 @@ themes_rec_a <- themes_rec |>
 
 # obtain data on lego sets
 # the data consists of 1000 results for 22 pages
-# instead of using a loop, I requested data from each page separately then combined the pages for the lego sets data of all 22 pages
+# I requested data from each page separately then combined the pages for the lego sets data of all 22 pages
 # I chose to do this the long way (without a loop) because I ran into less issues
 
 # page 1

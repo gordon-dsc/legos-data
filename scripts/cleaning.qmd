@@ -1,8 +1,119 @@
 ---
 title: "Data Cleaning Script"
+author: Ismael Rivera & Sam Putnam
 format: html
 ---
 
+# Data Cleaning
+
+### Install Packages
+
 ```{r packages}
 
+# Install Packages
+library(httr2)
+library(tidyverse)
+library(rvest)
+library(dplyr)
+```
+
+### Rectangle Themes
+
+```{r rectangle}
+
+# convert themes to a tibble in order to rectangle
+themes_rec <- tibble(json = themes)
+
+# rectangle themes_rec
+themes_rec_a <- themes_rec |>
+  slice(4) |>
+  unnest_longer(json) |>
+  unnest_wider(json)
+```
+
+### Rectangle Sets
+
+```{r rectangle}
+
+# convert all_sets to a tibble
+sets_rec <- tibble(json = all_sets)
+
+# rectangle sets_rec
+sets_rec_a <- sets_rec |>
+  unnest_longer(json) |>
+  unnest_wider(json)
+```
+
+### Combining API Data
+
+We combined themes_rec_a to sets_rec_a by joining the id column in themes_rec_a to the theme_id column in sets_rec_a.
+
+```{r api}
+
+# combine themes_rec_a to sets_rec_a 
+lego_data <- sets_rec_a |>
+  left_join(y = themes_rec_a, by = join_by(theme_id == id)) |>
+  rename(sets = name.x) |>
+  rename(themes = name.y) |>
+  select(!(set_img_url:last_modified_dt) & !(set_num))
+```
+
+Since we needed to rectangle the themes and sets data before joining them, these code cells were placed in the cleaning.qmd. However, the lego_data.csv was written to the imported_data folder since it was technically our imported API data.
+
+```{r csv}
+
+# write lego_data csv file to imported_data folder
+write_csv(lego_data,
+          file = "../data/imported_data/lego_data.csv")
+```
+
+### Combining API and Web Scrape
+
+```{r combine themes}
+
+# combine common themes together
+lego_data <- lego_data|>
+  mutate(themes = if_else(themes == "The Simpsons Series 1" | themes == "The Simpsons Series 2", "The Simpsons", themes)) |>
+  mutate(themes = if_else(themes == "Marvel Series 1" | themes == "Marvel Series 2" | themes == "Marvel Super Heroes" | themes == "Super Heroes Marvel", "Marvel", themes)) |>
+  mutate(themes = if_else(themes == "The LEGO Batman Movie" | themes == "The LEGO Batman Movie Series 1" | themes == "The LEGO Batman Movie Series 2", "Batman", themes)) |>
+  mutate(themes = if_else(themes == "Justice League" | themes == "DC Super Heroes" | themes == "Superman", "DC Comics", themes))
+
+```
+
+Here, we created a new column in the franchise data called themes, where the themes in the Lego set data matched the themes in the new column. If the franchise data didn't have a corresponding theme, then it was given an NA.
+
+```{r new column}
+
+# create a new column in the franchise data with the corresponding theme to the lego data (or NA)
+franchise_a <- franchise$themes <- c(NA, "Disney's Mickey Mouse", "Winnie the Pooh", "Star Wars", "Disney Princess", NA, "Harry Potter", NA, "Marvel", NA, "Batman", NA, "Spider-Man", NA, NA, "Cars", NA, "Teenage Mutant Ninja Turtles", "Looney Tunes", "Dora the Explorer", NA, NA, "Toy Story", NA, NA, NA, "Avengers", "Frozen", NA, "SpongeBob SquarePants", "Minions", NA, NA, NA, NA, NA, NA, "Angry Birds", "Thomas & Friends", "Jurassic World", NA, NA, "Super Mario", NA, "Pirates of the Caribbean", "Ben 10", "DC Comics", "The Muppets", NA, NA, NA, "X-Men", NA, "The Lord of the Rings", NA, NA, NA, NA, "Avatar", "Sonic The Hedgehog", NA, NA, NA, NA, NA, "Bob the Builder", NA, "The Simpsons", "Scooby-Doo", NA, NA, NA, NA, "Minecraft", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Iron Man", NA, NA, "Indiana Jones", NA, NA, "The Powerpuff Girls", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Guardians of the Galaxy", NA, NA, NA, NA, NA, NA, NA, NA, NA, "Ghostbusters", NA, NA, NA)
+```
+
+```{r franchise data}
+
+# select every column except the title column and get rid of the rows (media franchises) that don't have a lego theme
+franchise <- franchise |>
+  select(themes, year, original_medium, revenue) |>
+  na.omit()
+```
+
+Lastly, we joined the Lego set data to the media franchise data by joining the themes column from both data frames. We removed parent_id, theme_id, and all rows that contain an NA. This returns only the Lego sets that correspond to our franchise data.
+
+```{r combine api & scrape}
+
+# join the lego set data to the media franchise data
+# remove parent_id and get rid of all observations that contain an NA as this will only give us lego sets that correspond to the media franchises
+# also remove theme id because it means the same as the themes column which is now renamed as media_franchise
+lego_franchise <- lego_data |>
+  left_join(y = franchise, by = join_by(themes == themes)) |>
+  rename(release_year = year.x,
+         inception = year.y,
+         media_franchise = themes) |>
+  select(!(parent_id) & !(theme_id)) |>
+  na.omit()
+```
+
+```{r csv}
+
+write_csv(lego_franchise,
+          file = "../data/cleaned_data/lego_franchise.csv")
 ```
