@@ -1,0 +1,15 @@
+Variable Definitions for the lego_franchise dataset
+
+sets - This column gives the name of each lego set related to a top-grossing franchise.
+
+release_year - This column gives the year that each lego set was released.
+
+num_parts - This column gives the number of parts in each lego set.
+
+media_franchise - This column gives the title of each media franchise associated with each lego set.
+
+inception - This column tells the year that a franchise began official activity.
+
+original_medium - The first medium in whuch the franchise was released.
+
+revenue - This column gives the total revenue that each franchise has received up to the present.
