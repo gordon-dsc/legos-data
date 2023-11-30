@@ -172,3 +172,12 @@ question_6 <- lego_franchise|>
 
 ggsave(filename = "../output/question_6.png")
 ```
+
+## Final Data
+
+```{r csv}
+
+# write final data frame to output folder
+write_csv(x = lego_franchise,
+          file = "../output/final_data.csv")
+```
