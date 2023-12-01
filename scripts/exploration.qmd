@@ -7,7 +7,7 @@ format: html
 install.packages("tidyverse")
 library(tidyverse)
 
-#Question 1: Are there more Lego sets in movies than in non-movies?
+#Question 1: Is the average number of lego sets higher for movie franchise or non-movie franchise?
 
 ##Movies
 movie_subset <-filter(lego_franchise, original_medium == "Film" | original_medium == "Animated film" | original_medium == "Animated films")
