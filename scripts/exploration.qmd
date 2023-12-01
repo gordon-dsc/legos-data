@@ -106,7 +106,7 @@ write_csv(x = last_five_yrs,
 
 ## Question 4
 
-Are there more Lego sets in movies than in non-movies?
+Is the average number of Lego sets higher for movie franchises or non-movie franchises?
 
 ```{r question 4}
 
@@ -129,8 +129,6 @@ length(unique(nmovie_vector)) -> nmovie_franchise
 nmovie_average <- (nmovie_sets_count / nmovie_franchise)
 nmovie_average|>View()
 ```
-
-This shows that there are, on average, more sets if the franchise is a movie.
 
 ## Question 5
 
