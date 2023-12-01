@@ -1,16 +1,20 @@
-# Data Wrangling Project Template
+# LEGO Franchise
 
-## About this template
+## 
 
-The organizational structure (i.e., the specific way in which the files are nested within folders) of this repository is based on Project TIER's Documentation Protocol (version 4.0). [Project TIER](https://www.projecttier.org) (Teaching Integrity in Empirical Research), based out of Haverford College, is a multidisciplinary initiative created to promote reproducible data workflows in undergraduate curricula. In addition to hosting pedagogical training workshops for educators, Project TIER also maintains a guide, called the [TIER Protocol](https://www.projecttier.org/tier-protocol/protocol-4-0/), that outlines best practices in reproducible analysis. While this repository template takes considerable inspiration from the TIER Protocol, it differs in a couple key ways:
+## README.md
 
-1.  It simplifies the TIER Protocol in a way that is commensurate with the scope of the class project it is associated with.
+Overview
 
-2.  It forgoes the nomenclature introduced by TIER Protocol 4.0 in favor of file names that more consistently align with the terminology introduced in our textbook, [R for Data Science (2e)](https://r4ds.hadley.nz).
+The purpose of the project is to analyze the relationships between media franchises and LEGO sets that were produced in association with those franchises. A media franchise is a collection of related media, like movies. The Star Wars series is an example of a movie media franchise. The LEGO company produced a number of sets based on Star Wars characters, places and individual movies within the franchise.
 
-## Template organization and function
+### 1. Software and Platform
 
-The following directory tree (based on TIER Protocol 4.0) provides a simple visualization of the template's organizational structure.
+-   Software (R, RStudio, Git)
+-   Packages (httr2, tidyverse, rvest, tibble, readr, dplyr)
+-   Platform (macOS 12.0.1)
+
+### 2. Documentation Map
 
 -   project/
 
@@ -22,13 +26,19 @@ The following directory tree (based on TIER Protocol 4.0) provides a simple visu
 
         -   imported_data/
 
+            -   franchise.csv
+
+            -   all_sets.rds
+
+            -   themes.rds
+
             -   metadata/
 
                 -   source.txt
 
-                -   codebook.txt
-
         -   cleaned_data/
+
+            -   lego_franchise.csv
 
             -   metadata/
 
@@ -48,56 +58,39 @@ The following directory tree (based on TIER Protocol 4.0) provides a simple visu
 
         -   final_data.csv
 
-### README.md
+### 3. Instructions for reproducing your work
 
-Well would you look at that, you're reading through the README.md file right now! I bet you can even intuit a bit of the purpose of this document based on what you've read so far. In short, the README.md file is the "user manual" for your project. Because it functions to summarize the project, the README.md is the last document written. It is composed of three sections:
+The data were collected from online sources using web scraping and online APIs. That data was imported into R (with script import.qmd) and cleaned (cleaning.qmd). The cleaned data was combined and written to the file final_data.csv. The cleaned data was then analyzed (using exploration.qmd)
 
-1.  Software and platform
+#### Data import:
 
-    -   Software (R, RStudio, Git) and packages (e.g., httr2, rvest, tidyr, etc.) including version numbers
+Web scraping: Data on popular media franchises is available from Wikipedia: <https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises>
 
-    -   Platform (Windows, macOS) including version numbers
+To scrape this site, use import.qmd. The following packages are required: httr2, tidyverse, rvest, tibble, readr
 
-2.  Documentation map
+The relevant columns are imported one-by-one, then combined and cleaned.
 
-    -   A map of your directory tree (see the example above) that includes all files and folder in your project
+APIs: Data on LEGO sets is available from rebrickable.com. Make two GET requests since there was no data frame on rebrickable that contains both set and theme data.Join the set data to themes using the theme_id column.
 
-3.  Instructions for reproducing your work
+#### Data cleaning:
 
-    -   Step-by-step instructions that make it possible for a person unfamiliar with your project to reproduce the final_data.csv file
+Franchise data: The file cleaning.qmd removes entries that are not true franchises formats columns correctly (removing unwanted characters etc.) rectangles the data to convert it to a dataframe called "franchise"
 
-    -   These instructions should walk through the documentation map, clearly outlining the relationships between scripts and files (e.g., the data/imported_data/example.csv file is passed into scripts/cleaning.qmd to produce final_data.csv)
+The dataframe "franchise" has 121 rows (franchises) and 4 variables.
 
-### example_analysis.qmd
+LEGO data:
 
-Project products are given at the top-level (i.e., not nested within sub-folders) of the repository. In most cases, the major product will be some sort of report that incorporates exploration, visualization and modeling to address a problem or answer a question. In the context of this project, there is no such report --- the brief example analysis notebook that accompanies and illustrates the utility of final_data.csv is "standing in" for this summative document.
+After importing our sets/themes data from API and franchise data from web scraping, we joined the two datasets together for our final dataset. First, we had to combine common LEGO set themes together. For example, "The Simpsons Series 1" and "The Simpsons Series 2" were combined into a common theme labeled "The Simpsons". Next, we changed the themes in the franchise data to match similar names to the LEGO set data. Lastly, we were able to join the two data sets together by the themes column. This final dataset, lego_franchise_csv, contains information about LEGO sets including the release year and the number of parts as well as information on the associated media franchise with inception date, original medium, and total revenue.
 
-### The data/ folder
+The merged file has 2,562 rows and 7 variables, and is written out to final_data.csv.
 
-The data/ folder contains two sub-folders: (1) imported_data/ and (2) cleaned_data/. The imported_data/ folder will contain the data (as uncleaned R object files) you've gathered through API queries and web scraping. The cleaned_data/ folder will contain the dataset(s) that has/have been processed by the scripts/cleaning.qmd file.
+#### Exploration:
 
-### The scripts/ folder
+The file exploration.qmd addresses the following 6 questions:
 
-The scripts/ folder contains three Quarto notebooks: (1) import.qmd, (2) cleaning.qmd, and (3) exploration.qmd. All code related to the import of data (i.e., your `{httr2}` and `{rvest}` code) should be **well-annotated** and organized within import.qmd. All cleaning activities (e.g., rectangling, reshaping, parsing, coercion, recoding, etc.) should be well-annotated and organized within cleaning.qmd. Finally, a thoughtful exploration of the data should appear in exploration.qmd (again, well-annotated and organized).
-
-### The output/ folder
-
-In a more complete workflow, this folder would hold all of the images and tables corresponding to the visualizations and model results generated by the analysis. These figures and tables would then be incorporated into the final report. In the context of this project, the folder will contain only one or two files corresponding to your final_data.csv files(s).
-
-## How to use this template
-
-### Folders
-
-Please do not add, nor subtract any folders from this repository. I'll ask that you not change their names.
-
-### Scripts
-
-You should populate the existing Quarto notebooks with well-annotated and organized code related to the purpose/focus indicated in their file name.
-
-### Data
-
-The "final_data.csv" file is just a placeholder. You should delete this file once you've populated the "output/" folder with actual data
-
-### Metadata
-
-You will need to create separate metadata files for each dataset you store in "data/imported_data/" and "data/cleaned_data/". Each metadata file should be named with a prefix that indicates the the data file it is associated with. Note that there is no "codebook.txt" file in "data/imported_data". This is because the data stored in this folder will not have yet been rectangled, and so lacks the organized column structure needed to produce a codebook.
+1.  How many LEGO sets are there for each media franchise?
+2.  In which year were the most LEGO sets released, and in that year, which franchise released the most sets?
+3.  In the last 5 years, which franchise released the most LEGO sets?
+4.  Is the average number of LEGO sets higher for movie or non-movie franchises?
+5.  Are franchises that are higher-grossing associated with more LEGO sets?
+6.  Is the answer to #5 different for movie franchises than non-movie franchises?
