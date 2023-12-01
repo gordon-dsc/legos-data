@@ -13,3 +13,4 @@ inception - This column tells the year that a franchise began official activity.
 original_medium - The first medium in whuch the franchise was released.
 
 revenue - This column gives the total revenue that each franchise has received up to the present.
+This variable is measured in billions
