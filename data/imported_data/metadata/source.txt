@@ -1,0 +1,3 @@
+We collected the franchise data for this project from Wikipedia
+(https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises). Using SelectorGadget we webscraped the necessary columns for the dataframe. Once We had the webscraped data, the resulting dataset comprised "franchise titles" as the unit of
+observation, with variables: "year of inception", "revenue" and "original medium".
