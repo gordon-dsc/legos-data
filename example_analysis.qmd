@@ -3,6 +3,136 @@ title: "Example Analysis"
 format: html
 ---
 
-```{r packages}
+# Example Analysis
 
+## Example 1
+
+How many sets are there for each media franchise?
+
+```{r example 1}
+
+# group by media franchise to see how many sets per franchise
+# display from most sets to least sets
+question_1 <- lego_franchise |>
+  group_by(media_franchise) |>
+  summarise(count = n()) |>
+  arrange(desc(count))
 ```
+
+Star Wars has the most sets by far with 918 total. Batman follows with 201 sets while Harry Potter, Super Mario, and Marvel round out the top 5, respectively.
+
+## Example 2
+
+a\) Which year was the most sets released?
+
+```{r example 2}
+
+# group by release year to see in which year the most sets were released
+# arrange starting with the most recent year
+question_2a <- lego_franchise |>
+  group_by(release_year) |>
+  summarise(count = n()) |>
+  arrange(desc(release_year))
+```
+
+The most amount of sets were released in 2021 with a total of 238.
+
+b\) Which franchise released the most sets in 2021?
+
+```{r example 2}
+
+# filter for 2021 and count the amount of sets released by the franchises in that year
+question_2b <- lego_franchise |>
+  filter(release_year == 2021) |>
+  group_by(media_franchise) |>
+  summarise(count = n()) |>
+  arrange(desc(count))
+```
+
+Super Mario released the most sets in 2021 with a total of 46.
+
+## Example 3
+
+Which franchise is on the rise? In the last 5 years, which franchise released the most Lego sets?
+
+```{r example 3}
+
+# filter for the last five years (not counting 2024 since it is still 2023)
+# group by the franchises and count the amount of sets
+question_3 <- lego_franchise |>
+  filter(release_year >= 2019 & release_year < 2024) |>
+  group_by(media_franchise) |>
+  summarise(count= n()) |>
+  arrange(desc(count))
+```
+
+In the last 5 years, Star Wars released the most sets with 225 total.
+
+## Example 4
+
+Is the average number of Lego sets higher for a movie franchise or non-movie franchise?
+
+```{r example 4}
+
+# movies
+movie_subset <-filter(lego_franchise, original_medium == "Film" | original_medium == "Animated film" | original_medium == "Animated films")
+movie_vector <- as.vector(movie_subset$media_franchise)
+length(movie_vector) -> movie_sets_count
+length(unique(movie_vector)) -> movie_franchise
+movie_average <- (movie_sets_count / movie_franchise)
+movie_average|>View()
+```
+
+```{r question 4}
+
+# non-movies
+nmovie_subset <-filter(lego_franchise, original_medium != "Film" & original_medium != "Animated film" & original_medium != "Animated films")
+nmovie_vector <- as.vector(nmovie_subset$media_franchise)
+length(nmovie_vector) -> nmovie_sets_count
+length(unique(nmovie_vector)) -> nmovie_franchise
+nmovie_average <- (nmovie_sets_count / nmovie_franchise)
+nmovie_average|>View()
+```
+
+This shows that there are on average, more sets if the franchise is a movie.
+
+## Example 5
+
+Do franchises that are higher grossing have more sets?
+
+```{r example 5}
+
+question_5 <- lego_franchise|>
+  group_by(media_franchise)|>
+  mutate(count = n()) |>
+  distinct(media_franchise, revenue, count) |>
+  ggplot(mapping = aes(x = revenue,
+                       y = count)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+The plot shows that the higher the franchise revenue, the more Lego sets the franchise has.
+
+## Example 6
+
+Is the above answer different than with movie franchises vs non-movie franchises?
+
+```{r example 6}
+
+question_6 <- lego_franchise|>
+  mutate(movie = if_else(
+    condition = original_medium == "Film" | original_medium == "Animated films",
+    true = "movie",
+    false = "not_movie"))|>
+  group_by(media_franchise)|>
+  mutate(count = n()) |>
+  distinct(media_franchise, revenue, count, movie) |>
+  ggplot(mapping = aes(x = revenue,
+                       y = count,
+                       color = movie)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+After separating movies and non-movies, the plot shows that the higher the franchise revenue, the more Lego sets the franchise has.

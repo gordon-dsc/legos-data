@@ -1,9 +1,409 @@
 ---
 title: "Data Import Script"
+author: Ismael Rivera & Sam Putnam
 format: html
 ---
 
+# Data Import
+
+### Install Packages
+
 ```{r packages}
 
+# Install Packages
+library(httr2)
+library(tidyverse)
+library(rvest)
+library(dplyr)
 ```
 
+## API Data
+
+```{r apikey}
+
+# apikey for get request
+apikey <- 'd69ba9977714c17a26976fd51971f94b'
+```
+
+### Lego Themes
+
+```{r themes}
+
+# obtain data on lego themes
+base_url <- 'https://rebrickable.com' # base url for rebrickable
+request(base_url) |>
+  req_url_path_append('api/v3/lego/themes') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000) |>
+  # return first 1000 results
+  req_perform() |>
+  resp_body_json() -> themes
+```
+
+### Lego Sets
+
+In the following code, we obtained API data on Lego sets. This data consisted of 1000 results for 22 pages. I ran into many issues trying to run a loop, so I decided to obtain the data from each page separately and then combine it all after.
+
+```{r page 1}
+
+# page 1
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 1) |>
+  req_perform() |>
+  resp_body_json() -> sets1
+```
+
+```{r page 2}
+
+# page 2
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 2) |>
+  req_perform() |>
+  resp_body_json() -> sets2
+```
+
+```{r page 3}
+
+# page 3
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 3) |>
+  req_perform() |>
+  resp_body_json() -> sets3
+```
+
+```{r page 4}
+
+# page 4
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 4) |>
+  req_perform() |>
+  resp_body_json() -> sets4
+```
+
+```{r page 5}
+
+# page 5
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 5) |>
+  req_perform() |>
+  resp_body_json() -> sets5
+```
+
+```{r page 6}
+
+# page 6
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 6) |>
+  req_perform() |>
+  resp_body_json() -> sets6
+```
+
+```{r page 7}
+
+# page 7
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 7) |>
+  req_perform() |>
+  resp_body_json() -> sets7
+```
+
+```{r page 8}
+
+# page 8
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 8) |>
+  req_perform() |>
+  resp_body_json() -> sets8
+```
+
+```{r page 9}
+
+# page 9
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 9) |>
+  req_perform() |>
+  resp_body_json() -> sets9
+```
+
+```{r page 10}
+
+# page 10
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 10) |>
+  req_perform() |>
+  resp_body_json() -> sets10
+```
+
+```{r page 11}
+
+# page 11
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 11) |>
+  req_perform() |>
+  resp_body_json() -> sets11
+```
+
+```{r page 12}
+
+# page 12
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 12) |>
+  req_perform() |>
+  resp_body_json() -> sets12
+```
+
+```{r page 13}
+
+# page 13
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 13) |>
+  req_perform() |>
+  resp_body_json() -> sets13
+```
+
+```{r page 14}
+
+# page 14
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 14) |>
+  req_perform() |>
+  resp_body_json() -> sets14
+```
+
+```{r page 15}
+
+# page 15
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 15) |>
+  req_perform() |>
+  resp_body_json() -> sets15
+```
+
+```{r page 16}
+
+# page 16
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 16) |>
+  req_perform() |>
+  resp_body_json() -> sets16
+```
+
+```{r page 17}
+
+# page 17
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 17) |>
+  req_perform() |>
+  resp_body_json() -> sets17
+```
+
+```{r page 18}
+
+# page 18
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 18) |>
+  req_perform() |>
+  resp_body_json() -> sets18
+```
+
+```{r page 19}
+
+# page 19
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 19) |>
+  req_perform() |>
+  resp_body_json() -> sets19
+```
+
+```{r page 20}
+
+# page 20
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 20) |>
+  req_perform() |>
+  resp_body_json() -> sets20
+```
+
+```{r page 21}
+
+# page 21
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 21) |>
+  req_perform() |>
+  resp_body_json() -> sets21
+```
+
+```{r page 22}
+
+# page 22
+request(base_url) |>
+  req_url_path_append('api/v3/lego/sets') |>
+  req_url_query(key = 'd69ba9977714c17a26976fd51971f94b', page_size = 1000, page = 22) |>
+  req_perform() |>
+  resp_body_json() -> sets22
+```
+
+```{r combine pages}
+
+# combine all 22 pages to all_sets
+all_sets <- list(sets1[["results"]],
+                  sets2[["results"]],
+                  sets3[["results"]],
+                  sets4[["results"]],
+                  sets5[["results"]],
+                  sets6[["results"]],
+                  sets7[["results"]],
+                  sets8[["results"]],
+                  sets9[["results"]],
+                  sets10[["results"]],
+                  sets11[["results"]],
+                  sets12[["results"]],
+                  sets13[["results"]],
+                  sets14[["results"]],
+                  sets15[["results"]],
+                  sets16[["results"]],
+                  sets17[["results"]],
+                  sets18[["results"]],
+                  sets19[["results"]],
+                  sets20[["results"]],
+                  sets21[["results"]],
+                  sets22[["results"]])
+```
+
+```{r writing-data-to-file}
+save(themes, file = "../data/imported_data/themes.rds")
+save(all_sets, file = "../data/imported_data/all_sets.rds")
+getwd()
+```
+
+## Web Scrape
+
+### Media Franchise
+
+```{r franchise}
+
+# Web Scrape - franchise
+
+# Get the website to scrape franchise title
+title <- read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
+  
+# Get the data from website - (1st column - Franchise)
+html_nodes("td:nth-child(1)")|>
+  
+# Print data out neatly and save to value
+html_text2() -> franchise_title
+
+# Clean the data - Convert "Franchise" column to a dataframe
+title <- data.frame(title)
+
+# Remove unwanted empty rows
+title <- title |>
+filter(title != "") 
+
+# Remove unwanted rows at the end of the "Franchise" column
+title <- title[-122, ]
+title <-tibble(title)
+```
+
+### Year of Inception
+
+```{r year of inception}
+
+# Web Scrape - year of inception 
+
+# Get the website to scrape year
+year <- read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|> 
+
+# Get the data from website - (2nd column - Year of Inception)
+# Print data out neatly and save to value
+html_nodes("td:nth-child(2)")|>
+html_text2() -> year_of_inception
+
+# Clean the data - Convert "Year of Inception" column to a dataframe
+year_of_inception_df <- data.frame(year_of_inception)
+
+# Remove unwanted rows in the "Year of Inception" column
+year_of_inception_df <- year_of_inception_df[1:121,]
+year_1 <-tibble(year_of_inception_df)
+
+# Remove unwanted characters at the end of the values in the column
+year_1|>
+  mutate(year = parse_number(year_of_inception_df))|>
+  select(year) -> release_year
+```
+
+### Total Revenue
+
+```{r revenue}
+
+# Web Scrape - Total Revenue
+
+# Get the website to scrape
+read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
+
+# Get the data from website - (3rd column - Total Revenue)
+html_elements("td:nth-child(3)")|>
+
+# print out the data neatly
+html_text2() -> total_revenue
+
+# Clean the data - Convert "Total Revenue" column to a dataframe
+total_revenue_df <- data.frame(total_revenue)
+
+# remove unwanted parts of the "Total Revenue" column
+# remove the $ sign and "Billion" string
+# total Revenue will be expressed as a number in Billions
+total_revenue_df|>
+  mutate(revenue = parse_number(total_revenue))|>
+  select(revenue) -> franchise_revenue
+```
+
+### Original Medium
+
+```{r medium}
+
+# Web Scraping - Original Medium
+read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises")|>
+
+# Get the data from website - (5th column - Original Medium)
+html_elements("td:nth-child(5)")|>
+  
+# Print out data neatly and save to value
+html_text2() -> original_medium
+
+# Clean the data - Convert "Original Medium" column to a dataframe
+original_medium_df <- data.frame(original_medium)
+```
+
+```{r tibble}
+
+# create a tibble of all 4 columns
+tibble(title,release_year, original_medium_df, franchise_revenue) -> franchise
+```
+
+```{r csv}
+
+# write franchise csv file to imported_data folder
+write_csv(franchise,
+          file = "../data/imported_data/franchise.csv")
+```

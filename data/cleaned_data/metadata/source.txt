@@ -1,0 +1,9 @@
+After importing our sets/themes data from API and franchise data from web scraping,
+we joined the two datasets together for our final dataset. First, we had to combine
+common Lego set themes together. For example, "The Simpsons Series 1" and "The
+Simpsons Series 2" were combined into a common theme labeled "The Simpsons". Next, we
+changed the themes in the franchise data to match similar names to the Lego set 
+data. Lastly, we were able to join the two data sets together by the themes column. 
+This final dataset, lego_franchise_csv, contains information about Lego sets including
+the release year and the number of parts as well as information on the associated
+media franchise with inception date, original medium, and total revenue.

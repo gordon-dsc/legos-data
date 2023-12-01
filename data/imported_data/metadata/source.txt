@@ -1,0 +1,13 @@
+We acquired data about Lego sets and themes through the API from rebrickable.com.
+We needed to make two GET requests since there was no data frame on rebrickable
+that contained both set and theme data. However, the set data and theme data both
+contained a column labeled theme_id, which was the same in both data frames.
+Using theme_id, we joined the sets data to the themes data to create a data set
+which gave us the theme (e.g. Spider-Man or Star Wars) corresponding to a
+particular Lego set. 
+
+We collected the franchise data for this project from Wikipedia
+(https://en.wikipedia.org/wiki/List_of_highest-grossing_media_franchises). Using
+SelectorGadget we web scraped the necessary columns for the dataframe. Once We had the
+web scraped data, the resulting dataset comprised "franchise titles" as the unit of
+observation, with variables: "year of inception", "revenue" and "original medium".
