@@ -39,6 +39,8 @@ lego_franchise|>
   geom_point() +
   geom_smooth(method = "lm")
 
+#The plot shows that the higher the franchise revenue, the more lego sets the franchise has
+
 #Question 3:Is the above answer different than with
 #movie franchises vs non-movie franchises
 
@@ -55,3 +57,5 @@ lego_franchise|>
                        color = movie)) +
   geom_point() +
   geom_smooth(method = "lm")
+  
+#After separating movies and non-movies, the plot shows that the higher the franchise revenue, the more lego sets the franchise has
